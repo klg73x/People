@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using People.Models;
 using SQLite;
+using System.Threading.Tasks;
 
 namespace People
 {
 	public class PersonRepository
 	{
 		public string StatusMessage { get; set; }
-
+		private SQLiteAsyncConnection conn;
 		public PersonRepository(string dbPath)
 		{
-
+			conn = new SQLiteAsyncConnection(dbPath);
+			conn.CreateTableAsync<Person>().Wait();
 		}
 
-		public void AddNewPerson(string name)
+		public async Task AddNewPersonAsync(string name)
 		{
-			int result = 0;
 			try
 			{
 				//ensure a name was entered
@@ -25,8 +26,8 @@ namespace People
 					throw new Exception("Valid Name Required");
 
 				//insert new dude
-
-				StatusMessage = string.Format("{0} record(s) added [Name: {1}", result, name);
+				var result = await conn.InsertAsync(new Person { Name = name });
+				StatusMessage = string.Format("{0} record(s) added, Name: {1}", result, name);
 			}
 			catch (Exception ex)
 			{
@@ -34,9 +35,9 @@ namespace People
 			}
 		}
 
-		public List<Person> GetAllPeople()
+		public async Task<List<Person>> GetAllPeopleAsync()
 		{
-
+			return await conn.Table<Person>().ToListAsync();
 		}
 	}
 }

@@ -4,11 +4,13 @@ namespace People
 {
 	public partial class App : Application
 	{
-		public App(string displayText)
+		public static PersonRepository PersonRepo { get; private set; }
+
+		public App(string dbPath)
 		{
 			InitializeComponent();
-
-			MainPage = new PeoplePage(displayText);
+			PersonRepo = new PersonRepository(dbPath);
+			MainPage = new MainPage();
 		}
 
 		protected override void OnStart()
