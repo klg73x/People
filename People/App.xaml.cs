@@ -4,11 +4,11 @@ namespace People
 {
 	public partial class App : Application
 	{
-		public App()
+		public App(string displayText)
 		{
 			InitializeComponent();
 
-			MainPage = new PeoplePage();
+			MainPage = new PeoplePage(displayText);
 		}
 
 		protected override void OnStart()

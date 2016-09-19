@@ -4,9 +4,10 @@ namespace People
 {
 	public partial class PeoplePage : ContentPage
 	{
-		public PeoplePage()
+		public PeoplePage(string displayText)
 		{
 			InitializeComponent();
+			lblDisplayText.Text = displayText;
 		}
 	}
 }
